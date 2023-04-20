@@ -1,8 +1,8 @@
 const mongoose = require('mongoose')
-const mongoURI = "mongodb://0.0.0.0:27017/ShowTimeScoop"
+require('dotenv').config({ path: './.env' })
 
 const connectToMongo = () =>{
-    mongoose.connect(mongoURI,{
+    mongoose.connect(process.env.DATABASE_URL,{
         useNewUrlParser: true,
         useUnifiedTopology: true,
       },
