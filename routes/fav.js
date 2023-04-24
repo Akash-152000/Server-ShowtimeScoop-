@@ -22,8 +22,42 @@ router.post("/addfav", fetchUser, async (req, res) => {
   }
 });
 
+router.get("/getfav", fetchUser, async (req, res) => {
+    try {
+        const fav = await Favourite.find({user:req.user.id});
+        res.json(fav);
+    } catch (error) {
+        console.log(error.message)
+        res.status(500).send("Some Error Occured");
+    }
+});
+
 
 router.put("/updatefav/:id", fetchUser, async (req, res) => {
+  try {
+    const { favourite } = req.body;
+
+    let fav = await Favourite.findById(req.params.id);
+    if (!fav) {
+      return res.status(404).send("Not found");
+    }
+    if (fav.user.toString() !== req.user.id) {
+      return res.status(401).send("Not allowed");
+    }
+    fav = await Favourite.findByIdAndUpdate(
+      req.params.id,
+      { $push: {favourite} },
+      { new: true }
+    );
+    res.json(fav);
+
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).send("Some Error Occured");
+  }
+});
+
+router.put("/removefav/:id", fetchUser, async (req, res) => {
   try {
     const { favourite } = req.body;
 
