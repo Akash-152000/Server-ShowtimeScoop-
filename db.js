@@ -7,7 +7,7 @@ const connectToMongo = () =>{
         useUnifiedTopology: true,
       },
     )
-    .then(()=>console.log("Connected"))
+    .then(()=>console.log("Connected database"))
     .catch((err)=>{console.log(err)})
 }
 
